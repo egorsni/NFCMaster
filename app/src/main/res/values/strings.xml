@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">SamsungProject</string>
+    <string name="title_write">Добавить</string>
+    <string name="title_read">Прочитать</string>
+    <string name="title_settings">Настройки</string>
+    <string name="input_text">Введите текст</string>
+    <string name="read">Read</string>
+    <string-array name="writelist">
+        <item>Текст</item>
+        <item>Действие</item>
+        <item>Ссылка</item>
+    </string-array>
+</resources>
