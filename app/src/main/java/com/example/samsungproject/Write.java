@@ -56,11 +56,11 @@ public class Write extends Activity {
         if(mNfcAdapter != null) {
             if (!mNfcAdapter.isEnabled()){
                 LayoutInflater inflater = getLayoutInflater();
-                View dialoglayout = inflater.inflate(R.layout.write,(ViewGroup) findViewById(R.id.nfc_settings_layout));
+                View dialoglayout = inflater.inflate(R.layout.nfc_not_activated,(ViewGroup) findViewById(R.id.nfc_settings_layout));
                 new AlertDialog.Builder(this).setView(dialoglayout)
                         .setPositiveButton("Update Settings", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {
-                                Intent setnfc = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
+                                Intent setnfc = new Intent(Settings.ACTION_NFC_SETTINGS);
                                 startActivity(setnfc);
                             }
                         })
@@ -201,13 +201,28 @@ public class Write extends Activity {
         boolean addAAR = false;
         String uniqueId = name;
         byte[] uriField = uniqueId.getBytes(Charset.forName("US-ASCII"));
-        NdefRecord rtdUriRecord = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
-                NdefRecord.RTD_TEXT, new byte[0], uriField);
+        String type=HomeFragment.getType();
+        NdefRecord rtdUriRecord;
+        switch (type){
+            case "text":
+                rtdUriRecord = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
+                        NdefRecord.RTD_TEXT, new byte[0], uriField);
+                break;
+            case "url":
+                byte[] payload = new byte[uriField.length + 1];       //add 1 for the URI Prefix
+                payload[0] = 0x01;                        //prefixes http://www. to the URI
+                System.arraycopy(uriField, 0, payload, 1, uriField.length); //appends URI to payload
+                rtdUriRecord = new NdefRecord(
+                        NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_URI, new byte[0], payload);
+                break;
+                default:
+                    rtdUriRecord = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
+                            NdefRecord.RTD_TEXT, new byte[0], uriField);
+                    break;
+        }
         if(addAAR) {
             // note: returns AAR for different app (nfcreadtag)
-            return new NdefMessage(new NdefRecord[] {
-                    rtdUriRecord, NdefRecord.createApplicationRecord("com.tapwise.nfcreadtag")
-            });
+            return new NdefMessage(rtdUriRecord);
         } else {
             return new NdefMessage(new NdefRecord[] {
                     rtdUriRecord});

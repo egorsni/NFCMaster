@@ -17,6 +17,16 @@ import androidx.fragment.app.FragmentTransaction;
 
 
 public class HomeFragment extends Fragment {
+    static String type;
+
+    public static String getType() {
+        return type;
+    }
+
+    public static void setType(String type) {
+        HomeFragment.type = type;
+    }
+
     String [] values =
             {"Выберите...","Текст","Действие","Ссылка"};
     public HomeFragment() {
@@ -50,9 +60,19 @@ public class HomeFragment extends Fragment {
                                        int pos, long id) {
 switch (pos){
     case 1:
+        type="text";
         loadFragment(WriteTextFragment.newInstance());
-        Toast.makeText(getActivity(),"Выбран текст",Toast.LENGTH_LONG).show();
+        break;
+    case 2:
+        type="activity";
+        Toast.makeText(getActivity(),"В разработке",Toast.LENGTH_LONG).show();
+        break;
+    case 3:
+        type="url";
+        loadFragment(WriteTextFragment.newInstance());
+        break;
 }
+
             }
 
             @Override

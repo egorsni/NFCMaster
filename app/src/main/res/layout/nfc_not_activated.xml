@@ -6,18 +6,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center">
+    android:gravity="top"
+    android:layout_marginTop="10dp">
+    <ImageView
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:src="@drawable/ic_no_entry"
+        android:foregroundGravity="center"
+        android:layout_gravity="center"
+        android:layout_marginBottom="8dp"
+        android:scaleType="centerCrop"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Что вы хотите записать?"
+        android:text="NFC не включено"
+        android:textSize="25dp"
+        android:gravity="center"
         android:layout_gravity="center"
-        android:textSize="25dp"/>
-    <androidx.appcompat.widget.AppCompatSpinner
-        android:id="@+id/spinner"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:drawSelectorOnTop="true"
-        android:layout_gravity="center"/>
+        android:layout_marginBottom="8dp"/>
+
 </LinearLayout>
 </LinearLayout>

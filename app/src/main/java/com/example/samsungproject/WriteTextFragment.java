@@ -25,6 +25,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.lang.ref.WeakReference;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 public class WriteTextFragment extends Fragment {
 
@@ -57,6 +58,28 @@ ImageButton button = v.findViewById(R.id.imageButton);
         });
         return v;
     }
+    @Override
+    public void onResume() {
+        super.onResume();
 
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                    loadFragment(HomeFragment.newInstance());
+                    return true;
+                }
+                return false;
+            }
+        });
+
+    }
+    private void loadFragment(Fragment fragment) {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.fl_content, fragment);
+        ft.commit();
+    }
 }
 
