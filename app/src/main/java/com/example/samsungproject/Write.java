@@ -207,6 +207,19 @@ public class Write extends Activity {
             case "text":
                 rtdUriRecord = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
                         NdefRecord.RTD_TEXT, new byte[0], uriField);
+//                String lang       = "en";
+//                byte[] textBytes  = text.getBytes();
+//                byte[] langBytes  = lang.getBytes("US-ASCII");
+//                int    langLength = langBytes.length;
+//                int    textLength = textBytes.length;
+//                byte[] payload    = new byte[1 + langLength + textLength];
+//
+//                // set status byte (see NDEF spec for actual bits)
+//                payload[0] = (byte) langLength;
+//
+//                // copy langbytes and textbytes into payload
+//                System.arraycopy(langBytes, 0, payload, 1,              langLength);
+//                System.arraycopy(textBytes, 0, payload, 1 + langLength, textLength);
                 break;
             case "url":
                 byte[] payload = new byte[uriField.length + 1];       //add 1 for the URI Prefix

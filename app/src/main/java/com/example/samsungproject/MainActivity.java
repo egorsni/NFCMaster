@@ -1,6 +1,9 @@
 package com.example.samsungproject;
 
 import android.content.Intent;
+import android.nfc.NdefMessage;
+import android.nfc.NfcAdapter;
+import android.nfc.Tag;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -8,17 +11,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.os.Parcelable;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
-
-
+    public static final String MIME_TEXT_PLAIN = "text/plain";
+    private TextView mTextView;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
