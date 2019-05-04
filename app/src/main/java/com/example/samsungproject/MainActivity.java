@@ -1,6 +1,9 @@
 package com.example.samsungproject;
 
+import android.content.ClipData;
+import android.content.ClipData.Item;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
@@ -13,18 +16,25 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Parcelable;
 import android.util.Log;
+import android.view.ActionProvider;
+import android.view.ContextMenu;
 import android.view.MenuItem;
+import android.view.SubMenu;
+import android.view.View;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Set;
+
 
 public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
-    public static final String MIME_TEXT_PLAIN = "text/plain";
-    private TextView mTextView;
+
+
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -33,10 +43,11 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_write:
-                    loadFragment(HomeFragment.newInstance());
+                   loadFragment(HomeFragment.newInstance());
                     return true;
                 case R.id.navigation_read:
-                    loadFragment(ReadFragment.newInstance());
+                    Intent intent = new Intent(MainActivity.this, ReadText.class);
+                    startActivity(intent);
                     return true;
                 case R.id.navigation_settings:
                     loadFragment(SettingsFragment.newInstance());
@@ -60,5 +71,4 @@ public class MainActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         findViewById(R.id.navigation_write).callOnClick();
     }
-
 }

@@ -64,8 +64,8 @@ switch (pos){
         loadFragment(WriteTextFragment.newInstance());
         break;
     case 2:
-        type="activity";
-        Toast.makeText(getActivity(),"В разработке",Toast.LENGTH_LONG).show();
+        type="action";
+        loadFragment(WriteActionFragment.newInstance());
         break;
     case 3:
         type="url";

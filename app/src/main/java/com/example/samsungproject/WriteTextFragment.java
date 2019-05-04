@@ -45,6 +45,9 @@ public class WriteTextFragment extends Fragment {
         View v = inflater.inflate(R.layout.write_text, container, false);
         mTextInputLayout = (TextInputLayout) v.findViewById(R.id.textInputLayout);
         mEditText = (EditText) v.findViewById(R.id.editTextName);
+        if(HomeFragment.getType()=="url") {
+            mEditText.setText("https://www.");
+        }
 
 ImageButton button = v.findViewById(R.id.imageButton);
         button.setOnClickListener(new View.OnClickListener() {

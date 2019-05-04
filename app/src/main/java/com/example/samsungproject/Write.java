@@ -199,12 +199,26 @@ public class Write extends Activity {
     }
     private NdefMessage getTagAsNdef() {
         boolean addAAR = false;
-        String uniqueId = name;
-        byte[] uriField = uniqueId.getBytes(Charset.forName("US-ASCII"));
+        String uniqueId;
         String type=HomeFragment.getType();
         NdefRecord rtdUriRecord;
         switch (type){
             case "text":
+                uniqueId="1"+name;
+                break;
+            case "url":
+                uniqueId="2"+name;
+                break;
+            case "action":
+                uniqueId="3"+name;
+                break;
+                default:
+                    uniqueId="1"+name;
+                    break;
+        }
+        byte[] uriField = uniqueId.getBytes(Charset.forName("US-ASCII"));
+//        switch (type){
+//            case "text":
                 rtdUriRecord = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
                         NdefRecord.RTD_TEXT, new byte[0], uriField);
 //                String lang       = "en";
@@ -220,19 +234,23 @@ public class Write extends Activity {
 //                // copy langbytes and textbytes into payload
 //                System.arraycopy(langBytes, 0, payload, 1,              langLength);
 //                System.arraycopy(textBytes, 0, payload, 1 + langLength, textLength);
-                break;
-            case "url":
-                byte[] payload = new byte[uriField.length + 1];       //add 1 for the URI Prefix
-                payload[0] = 0x01;                        //prefixes http://www. to the URI
-                System.arraycopy(uriField, 0, payload, 1, uriField.length); //appends URI to payload
-                rtdUriRecord = new NdefRecord(
-                        NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_URI, new byte[0], payload);
-                break;
-                default:
-                    rtdUriRecord = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
-                            NdefRecord.RTD_TEXT, new byte[0], uriField);
-                    break;
-        }
+//                break;
+//            case "url":
+//                byte[] payload = new byte[uriField.length + 1];       //add 1 for the URI Prefix
+//                payload[0] = 0x01;                        //prefixes http://www. to the URI
+//                System.arraycopy(uriField, 0, payload, 1, uriField.length); //appends URI to payload
+//                rtdUriRecord = new NdefRecord(
+//                        NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_URI, new byte[0], payload);
+//                break;
+//            case "action":
+//                rtdUriRecord = NdefRecord.createMime("action",
+//                        uriField);
+//                break;
+//            default:
+//                rtdUriRecord = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
+//                        NdefRecord.RTD_TEXT, new byte[0], uriField);
+//                break;
+//        }
         if(addAAR) {
             // note: returns AAR for different app (nfcreadtag)
             return new NdefMessage(rtdUriRecord);
