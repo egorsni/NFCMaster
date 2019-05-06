@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 
 public class Write extends Activity {
     private static final String TAG = "NFCWriteTag";
@@ -201,6 +202,7 @@ public class Write extends Activity {
         boolean addAAR = false;
         String uniqueId;
         String type=HomeFragment.getType();
+        ArrayList<String> finalAction = WriteActionFragment.getAction();
         NdefRecord rtdUriRecord;
         switch (type){
             case "text":
