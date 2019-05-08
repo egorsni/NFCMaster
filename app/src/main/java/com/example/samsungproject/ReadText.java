@@ -4,7 +4,9 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.net.wifi.WifiManager;
 import android.nfc.FormatException;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
@@ -21,34 +23,36 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 public class ReadText extends AppCompatActivity {
 
-    public static final String ERROR_DETECTED = "No NFC tag detected!";
-    public static final String WRITE_SUCCESS = "Text written to the NFC tag successfully!";
-    public static final String WRITE_ERROR = "Error during writing, is the NFC tag close enough to your device?";
+
     NfcAdapter nfcAdapter;
     PendingIntent pendingIntent;
     IntentFilter writeTagFilters[];
     boolean writeMode;
     Tag myTag;
+    TextView textvisible;
     Context context;
-
+    WifiManager wifiManager;
+    ConnectivityManager cm;
     TextView tvNFCContent;
-    TextView message;
-    Button btnWrite;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.read_layout);
         context = this;
-
+        wifiManager = (WifiManager) this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         tvNFCContent = (TextView) findViewById(R.id.nfc_contents);
-
-
+textvisible= findViewById(R.id.nfcmessage);
+textvisible.setVisibility(View.INVISIBLE);
+         cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if (nfcAdapter == null) {
             // Stop here, we definitely need NFC
@@ -103,7 +107,8 @@ public class ReadText extends AppCompatActivity {
            text=removeCharAt(text,0);
             switch (first){
                 case '1':
-
+                    textvisible.setVisibility(View.VISIBLE);
+                    tvNFCContent.setText(text);
                     break;
                 case '2':
                     Uri webpage = Uri.parse(text);
@@ -111,7 +116,18 @@ public class ReadText extends AppCompatActivity {
                     startActivity(webIntent);
                     break;
                 case '3':
+for(int i=0;i<text.length();i++){
+    char a=text.charAt(i);
 
+    switch (a){
+        case'1':
+            wifiManager.setWifiEnabled(true);
+            break;
+        case'2':
+            wifiManager.setWifiEnabled(false);
+            break;
+    }
+}
                     break;
             }
 
@@ -119,7 +135,7 @@ public class ReadText extends AppCompatActivity {
             Log.e("UnsupportedEncoding", e.toString());
         }
 
-        tvNFCContent.setText("NFC Content: " + text);
+
     }
 
 
@@ -132,9 +148,7 @@ public class ReadText extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         setIntent(intent);
         readFromIntent(intent);
-        if(NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())){
-            myTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-        }
+
     }
 
     @Override

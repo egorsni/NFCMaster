@@ -1,12 +1,14 @@
 package com.example.samsungproject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -20,10 +22,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 
 public class WriteActionFragment extends Fragment {
-    static ArrayList<String> action;
+    static ArrayList action;
     LinearLayout layout;
     Spinner newSpinner;
     NewCustomAdapter adapter;
+    Button start;
+    String actions;
+    int i=1;
+    FloatingActionButton add;
 
     public static ArrayList<String> getAction() {
         return action;
@@ -62,6 +68,8 @@ public class WriteActionFragment extends Fragment {
 
         View v= inflater.inflate(R.layout.choose_action, container, false);
 
+        start=v.findViewById(R.id.startwrite);
+        action= new ArrayList();
         layout = v.findViewById(R.id.linearLayout1);
 
          Spinner actionSpinner = (Spinner) v.findViewById(R.id.aciton_spinner);
@@ -70,6 +78,20 @@ public class WriteActionFragment extends Fragment {
                 R.layout.action_row, actionValues);
         actionSpinner.setAdapter(adapter);
        actionSpinner.performClick();
+start.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        if(action.size()>0){
+            actions=action.toString();
+            Intent intent = new Intent(getActivity(), Write.class);
+            intent.putExtra("1", actions);
+            startActivity(intent);
+        }
+        else{
+
+        }
+    }
+});
 
         actionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -78,15 +100,16 @@ public class WriteActionFragment extends Fragment {
                                        int pos, long id) {
                 switch (pos){
                     case 1:
-
+if(!action.contains("1")){
+    action.add("1");
+}
                         break;
                     case 2:
+                        if(!action.contains("2")){
+                            action.add("2");
+                        }
+                        break;
 
-                        break;
-                    case 3:
-//                        type="url";
-//                        loadFragment(WriteTextFragment.newInstance());
-                        break;
                 }
 
             }
@@ -96,7 +119,7 @@ public class WriteActionFragment extends Fragment {
 
             }
         });
-        FloatingActionButton add =  v.findViewById(R.id.addActionButton);
+        add =  v.findViewById(R.id.addActionButton);
 
 
 
@@ -134,11 +157,18 @@ public class WriteActionFragment extends Fragment {
                     }
                 });
                 newSpinner.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                layout.addView(newSpinner);
+                if(i<2) {
+                    layout.addView(newSpinner);
+                    i++;
+                }
+                if(i>=2){
+                    add.hide();
+                }
             }
         });
         return v;
     }
+
     public class NewCustomAdapter extends ArrayAdapter<String> {
 
         public NewCustomAdapter(Context context, int textViewResourceId,
@@ -184,4 +214,5 @@ public class WriteActionFragment extends Fragment {
             return row;
         }
     }
+
 }

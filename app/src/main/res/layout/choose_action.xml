@@ -17,25 +17,30 @@
             android:layout_marginBottom="24dp"
             android:backgroundTint="@color/colorPrimary"
             android:clickable="true"
+            android:focusable="true"
             app:fabSize="auto"
             app:hoveredFocusedTranslationZ="12dp"
-            app:layout_constraintBottom_toBottomOf="@+id/linearLayout1"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:pressedTranslationZ="12dp"
             app:srcCompat="@android:drawable/ic_input_add"
-            app:useCompatPadding="false"
-            android:focusable="true" />
+            app:useCompatPadding="false" />
 
         <LinearLayout
             android:id="@+id/linearLayout1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             android:gravity="center"
             android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/addActionButton"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -52,5 +57,19 @@
                 android:drawSelectorOnTop="true" />
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/startwrite"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/colorPrimary"
+            android:text="Записать"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/addActionButton"
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
