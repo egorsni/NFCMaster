@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SamsungProject</string>
+    <string name="app_name">NFCMaster</string>
     <string name="title_write">Добавить</string>
     <string name="title_read">Прочитать</string>
     <string name="title_settings">Настройки</string>

@@ -1,9 +1,17 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        debug {
+            keyAlias = 'NFCMaster'
+            keyPassword '17122002tujh'
+            storeFile file('D:\\NFCMaster\\my_key_store.jks')
+            storePassword '17122002tujh'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.example.samsungproject"
+        applicationId "com.example.NFCMaster"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
@@ -14,6 +22,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
         }
     }
 }

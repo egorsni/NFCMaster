@@ -1,28 +1,16 @@
 package com.example.samsungproject;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.nfc.NfcAdapter;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.samsungproject.R;
 import com.google.android.material.textfield.TextInputLayout;
-
-import java.lang.ref.WeakReference;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;

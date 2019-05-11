@@ -5,21 +5,21 @@
     <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-
+    <protected-broadcast android:name="com.sonymobile.intent.action.POWER_BACK_OFF_FACTOR_CHANGED" />
     <uses-feature
         android:name="android.hardware.nfc"
         android:required="true" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/mylogo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/mylogo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.samsungproject.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
@@ -34,10 +34,10 @@
                 android:resource="@xml/nfc_tech_filter" />
         </activity>
         <activity
-            android:name=".Write"
+            android:name="com.example.samsungproject.Write"
             android:label="@string/app_name" />
         <activity
-            android:name=".ReadText"
+            android:name="com.example.samsungproject.ReadText"
             android:label="@string/app_name" />
     </application>
 

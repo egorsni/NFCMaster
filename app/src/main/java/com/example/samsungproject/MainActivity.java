@@ -1,33 +1,17 @@
 package com.example.samsungproject;
 
-import android.app.IntentService;
-import android.content.ClipData;
-import android.content.ClipData.Item;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.nfc.NdefMessage;
-import android.nfc.NfcAdapter;
-import android.nfc.Tag;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.example.samsungproject.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.os.Parcelable;
-import android.util.Log;
-import android.view.ActionProvider;
-import android.view.ContextMenu;
 import android.view.MenuItem;
-import android.view.SubMenu;
-import android.view.View;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.io.UnsupportedEncodingException;
-import java.util.Set;
 
 
 public class MainActivity extends AppCompatActivity {

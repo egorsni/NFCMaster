@@ -20,6 +20,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.samsungproject.R;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;

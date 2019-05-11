@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.samsungproject.R;
+
 public class SettingsFragment extends Fragment {
     public SettingsFragment() {
     }
