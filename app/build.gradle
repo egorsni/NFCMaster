@@ -5,7 +5,7 @@ android {
         debug {
             keyAlias = 'NFCMaster'
             keyPassword '17122002tujh'
-            storeFile file('D:\\NFCMaster\\my_key_store.jks')
+            storeFile file('C:\\Users\\user\\Desktop\\NFCMaster\\my_key.jks')
             storePassword '17122002tujh'
         }
     }
@@ -38,6 +38,5 @@ dependencies {
     compile group: 'com.google.android.material', name: 'material', version: '1.0.0'
     implementation 'com.android.support:appcompat-v7:28.0.0-alpha3'
     compile 'com.android.support:design:28.0.0'
-    implementation 'org.greenrobot:eventbus:3.1.1'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
 }
