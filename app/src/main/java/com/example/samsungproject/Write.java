@@ -96,6 +96,10 @@ public class Write extends Activity {
                     WriteResponse wr = writeTag(getTagAsNdef(), detectedTag);
                     String message = (wr.getStatus() == 1? "Success: " : "Failed: ") + wr.getMessage();
                     Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
+                    if(message=="Success: Wrote message to pre-formatted tag."){
+                        Intent intent1= new Intent(this,MainActivity.class);
+                        startActivity(intent1);
+                    }
                 } else {
                     Toast.makeText(context,"This tag is not writable",Toast.LENGTH_SHORT).show();
 
@@ -206,25 +210,39 @@ public class Write extends Activity {
         String type=HomeFragment.getType();
         ArrayList<String> finalAction = WriteActionFragment.getAction();
         NdefRecord rtdUriRecord;
+        byte[] payload;
+        byte[] uriField;
+        String detectedLanguage = null;
         switch (type){
             case "text":
                 uniqueId="1"+name;
+                uriField = uniqueId.getBytes(Charset.forName("US-ASCII"));
+                rtdUriRecord = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
+                        NdefRecord.RTD_TEXT, new byte[0], uriField);
                 break;
             case "url":
-                uniqueId="2"+name;
+                uniqueId=name;
+                uriField = uniqueId.getBytes(Charset.forName("US-ASCII"));
+                payload = new byte[uriField.length + 1];       //add 1 for the URI Prefix
+                payload[0] = 0x01;                        //prefixes http://www. to the URI
+                System.arraycopy(uriField, 0, payload, 1, uriField.length); //appends URI to payload
+                rtdUriRecord = new NdefRecord(
+                        NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_URI, new byte[0], payload);
                 break;
             case "action":
                 uniqueId="3"+name;
+                uriField = uniqueId.getBytes(Charset.forName("US-ASCII"));
+                rtdUriRecord = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
+                        NdefRecord.RTD_TEXT, new byte[0], uriField);
                 break;
                 default:
                     uniqueId="1"+name;
+                    uriField = uniqueId.getBytes(Charset.forName("US-ASCII"));
+                    rtdUriRecord = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
+                            NdefRecord.RTD_TEXT, new byte[0], uriField);
                     break;
         }
-        byte[] uriField = uniqueId.getBytes(Charset.forName("US-ASCII"));
-//        switch (type){
-//            case "text":
-                rtdUriRecord = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
-                        NdefRecord.RTD_TEXT, new byte[0], uriField);
+
 //                String lang       = "en";
 //                byte[] textBytes  = text.getBytes();
 //                byte[] langBytes  = lang.getBytes("US-ASCII");

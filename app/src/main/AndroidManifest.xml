@@ -5,7 +5,9 @@
     <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <protected-broadcast android:name="com.sonymobile.intent.action.POWER_BACK_OFF_FACTOR_CHANGED" />
+
     <uses-feature
         android:name="android.hardware.nfc"
         android:required="true" />
@@ -17,9 +19,15 @@
         android:roundIcon="@mipmap/mylogo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <service
+            android:name=".NFCReadService"
+            android:enabled="true"
+            android:exported="true">
+
+        </service>
 
         <activity
-            android:name="com.example.samsungproject.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
@@ -30,18 +38,19 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
             <meta-data
                 android:name="android.nfc.action.TECH_DISCOVERED"
                 android:resource="@xml/nfc_tech_filter" />
         </activity>
         <activity
-            android:name="com.example.samsungproject.Write"
+            android:name=".Write"
             android:label="@string/app_name" />
         <activity
-            android:name="com.example.samsungproject.ReadText"
+            android:name=".ReadText"
             android:label="@string/app_name" />
     </application>
 
