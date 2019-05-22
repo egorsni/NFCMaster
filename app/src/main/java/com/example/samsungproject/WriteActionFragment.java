@@ -146,7 +146,7 @@ if(!action.contains("1")){
                                 break;
                             case 3:
 //                        type="url";
-//                        loadFragment(WriteTextFragment.newInstance());
+//                        loadFragment(WritePhoneFragment.newInstance());
                                 break;
                         }
 

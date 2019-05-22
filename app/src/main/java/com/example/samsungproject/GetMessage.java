@@ -1,5 +1,6 @@
 package com.example.samsungproject;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -7,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.nfc.NdefMessage;
@@ -15,27 +15,25 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.os.PersistableBundle;
 import android.provider.Settings;
 import android.text.util.Linkify;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.samsungproject.R;
-
 import java.io.UnsupportedEncodingException;
+import java.util.Set;
 
-public class ReadText extends AppCompatActivity {
+public class GetMessage extends AppCompatActivity {
 
-ImageView startImage;
-TextView startText;
+
     NfcAdapter nfcAdapter;
     PendingIntent pendingIntent;
     IntentFilter writeTagFilters[];
@@ -46,25 +44,14 @@ TextView startText;
     WifiManager wifiManager;
     ConnectivityManager cm;
     TextView tvNFCContent;
-
+    static String msg;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.read_layout);
-        Display display = getWindowManager().getDefaultDisplay();
-        int width = display.getWidth();  // deprecated
-        int height = display.getHeight();  // deprecated
-        context = this;
-        startText=findViewById(R.id.startText);
-        startImage=findViewById(R.id.starImage);
-        startText.setVisibility(View.VISIBLE);
-        startImage.setVisibility(View.VISIBLE);
-        wifiManager = (WifiManager) this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        tvNFCContent = (TextView) findViewById(R.id.nfc_contents);
-textvisible= findViewById(R.id.nfcmessage);
-textvisible.setVisibility(View.INVISIBLE);
+        setContentView(R.layout.start_copy);
 
-         cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        context = this;
+
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if (nfcAdapter == null) {
             // Stop here, we definitely need NFC
@@ -129,65 +116,17 @@ textvisible.setVisibility(View.INVISIBLE);
         int languageCodeLength = payload[0] & 0063; // Get the Language Code, e.g. "en"
         // String languageCode = new String(payload, 1, languageCodeLength, "US-ASCII");
 
-        try {
+
             // Get the Text
             //    text = new String(payload, languageCodeLength + 1, payload.length - languageCodeLength - 1, textEncoding);
+        try {
             text = new String(payload, "UTF-8");
-            first = text.charAt(0);
-            switch (first){
-                case '1':
-                    startText.setVisibility(View.INVISIBLE);
-                    startImage.setVisibility(View.INVISIBLE);
-                    text=removeCharAt(text,0);
-                    textvisible.setVisibility(View.VISIBLE);
-                    tvNFCContent.setText(text);
-                    break;
-                case '3':
-                    text=removeCharAt(text,0);
-for(int i=0;i<text.length();i++){
-    char a=text.charAt(i);
-
-
-    switch (a){
-        case'1':
-            if (!wifiManager.isWifiEnabled()) {
-                wifiManager.setWifiEnabled(true);
-            }
-            break;
-        case'2':
-
-            if (wifiManager.isWifiEnabled()) {
-                wifiManager.setWifiEnabled(false);
-            }
-            break;
-    }
-    Intent intent= new Intent(this,MainActivity.class);
-    startActivity(intent);
-}
-                    break;
-                case '4':
-                    text=removeCharAt(text,0);
-                    textvisible.setVisibility(View.VISIBLE);
-                    tvNFCContent.setText(text);
-tvNFCContent.setLinksClickable(true);
-                    Linkify.addLinks(tvNFCContent,Linkify.PHONE_NUMBERS);
-                    break;
-                default:
-                    text=removeCharAt(text,0);
-                    if (!text.startsWith("http://") && !text.startsWith("https://"))
-                        text = "http://" + text;
-    Uri webpage = Uri.parse(text);
-    Intent webIntent = new Intent(Intent.ACTION_VIEW, webpage);
-    startActivity(webIntent);
-
-                    break;
-            }
-
         } catch (UnsupportedEncodingException e) {
-            Log.e("UnsupportedEncoding", e.toString());
+            e.printStackTrace();
         }
-
-
+msg=text;
+Intent intent1=new Intent(this, SetMessage.class);
+startActivity(intent1);
     }
 
 

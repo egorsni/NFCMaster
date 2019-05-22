@@ -1,6 +1,5 @@
 package com.example.samsungproject;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -20,11 +19,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 
-public class Write extends Activity {
+import static com.example.samsungproject.GetMessage.msg;
+
+public class SetMessage extends AppCompatActivity {
     private static final String TAG = "NFCWriteTag";
     private NfcAdapter mNfcAdapter;
     private IntentFilter[] mWriteTagFilters;
@@ -38,7 +41,7 @@ public class Write extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.write);
+        setContentView(R.layout.set_message);
         context = getApplicationContext();
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
         mNfcPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this,
@@ -91,13 +94,10 @@ public class Write extends Activity {
                 // check if tag is writable (to the extent that we can
                 if(writableTag(detectedTag)) {
                     //writeTag here
-                    WriteResponse wr = writeTag(getTagAsNdef(), detectedTag);
+                    WriteResponse1 wr = writeTag(getTagAsNdef(), detectedTag);
                     String message = (wr.getStatus() == 1? "Success: " : "Failed: ") + wr.getMessage();
                     Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
-                    if(message=="Success: Wrote message to pre-formatted tag."){
-                        Intent intent1= new Intent(this,MainActivity.class);
-                        startActivity(intent1);
-                    }
+
                 } else {
                     Toast.makeText(context,"This tag is not writable",Toast.LENGTH_SHORT).show();
 
@@ -108,7 +108,7 @@ public class Write extends Activity {
             }
         }
     }
-    public WriteResponse writeTag(NdefMessage message, Tag tag) {
+    public WriteResponse1 writeTag(NdefMessage message, Tag tag) {
         int size = message.toByteArray().length;
         String mess = "";
         try {
@@ -116,17 +116,21 @@ public class Write extends Activity {
             if (ndef != null) {
                 ndef.connect();
                 if (!ndef.isWritable()) {
-                    return new WriteResponse(0,"Tag is read-only");
+                    return new WriteResponse1(0,"Tag is read-only");
                 }
                 if (ndef.getMaxSize() < size) {
                     mess = "Tag capacity is " + ndef.getMaxSize() + " bytes, message is " + size
                             + " bytes.";
-                    return new WriteResponse(0,mess);
+                    return new WriteResponse1(0,mess);
                 }
                 ndef.writeNdefMessage(message);
                 if(writeProtect) ndef.makeReadOnly();
                 mess = "Wrote message to pre-formatted tag.";
-                return new WriteResponse(1,mess);
+
+                    Intent intent1= new Intent(this,MainActivity.class);
+                    startActivity(intent1);
+
+                return new WriteResponse1(1,mess);
             } else {
                 NdefFormatable format = NdefFormatable.get(tag);
                 if (format != null) {
@@ -134,25 +138,25 @@ public class Write extends Activity {
                         format.connect();
                         format.format(message);
                         mess = "Formatted tag and wrote message";
-                        return new WriteResponse(1,mess);
+                        return new WriteResponse1(1,mess);
                     } catch (IOException e) {
                         mess = "Failed to format tag.";
-                        return new WriteResponse(0,mess);
+                        return new WriteResponse1(0,mess);
                     }
                 } else {
                     mess = "Tag doesn't support NDEF.";
-                    return new WriteResponse(0,mess);
+                    return new WriteResponse1(0,mess);
                 }
             }
         } catch (Exception e) {
             mess = "Failed to write tag";
-            return new WriteResponse(0,mess);
+            return new WriteResponse1(0,mess);
         }
     }
-    private class WriteResponse {
+    private class WriteResponse1 {
         int status;
         String message;
-        WriteResponse(int Status, String Message) {
+        WriteResponse1(int Status, String Message) {
             this.status = Status;
             this.message = Message;
         }
@@ -211,42 +215,11 @@ public class Write extends Activity {
         byte[] payload;
         byte[] uriField;
         String detectedLanguage = null;
-        switch (type){
-            case "text":
-                uniqueId="1"+name;
+                uniqueId=msg;
                 uriField = uniqueId.getBytes(Charset.forName("US-ASCII"));
                 rtdUriRecord = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
                         NdefRecord.RTD_TEXT, new byte[0], uriField);
-                break;
-            case "url":
-                uniqueId=name;
-                uriField = uniqueId.getBytes(Charset.forName("US-ASCII"));
-                payload = new byte[uriField.length + 1];       //add 1 for the URI Prefix
-                payload[0] = 0x01;                        //prefixes http://www. to the URI
-                System.arraycopy(uriField, 0, payload, 1, uriField.length); //appends URI to payload
-                rtdUriRecord = new NdefRecord(
-                        NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_URI, new byte[0], payload);
-                break;
-            case "action":
-                uniqueId="3"+name;
-                uriField = uniqueId.getBytes(Charset.forName("US-ASCII"));
-                rtdUriRecord = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
-                        NdefRecord.RTD_TEXT, new byte[0], uriField);
-                break;
-            case "phone":
-                uniqueId="4"+name;
-                uriField = uniqueId.getBytes(Charset.forName("US-ASCII"));
-                rtdUriRecord = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
-                        NdefRecord.RTD_TEXT, new byte[0], uriField);
-                break;
-                default:
-                    uniqueId="1"+name;
-                    uriField = uniqueId.getBytes(Charset.forName("US-ASCII"));
-                    rtdUriRecord = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
-                            NdefRecord.RTD_TEXT, new byte[0], uriField);
-                    break;
 
-        }
 
 //                String lang       = "en";
 //                byte[] textBytes  = text.getBytes();

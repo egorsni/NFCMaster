@@ -29,7 +29,7 @@ public class HomeFragment extends Fragment {
     }
 
     String [] values =
-            {"Выберите...","Текст","Действие","Ссылка"};
+            {"Выберите...","Текст","Действие","Ссылка","Номер телефона"};
     public HomeFragment() {
     }
 
@@ -70,6 +70,10 @@ switch (pos){
         break;
     case 3:
         type="url";
+        loadFragment(WriteTextFragment.newInstance());
+        break;
+    case 4:
+        type="phone";
         loadFragment(WriteTextFragment.newInstance());
         break;
 }
@@ -124,6 +128,9 @@ switch (pos){
                     break;
                 case "Ссылка":
                     icon.setImageResource(R.drawable.ic_link_black_24dp);
+                    break;
+                case "Номер телефона":
+                    icon.setImageResource(R.drawable.ic_local_phone_black_24dp);
                     break;
             }
 

@@ -12,8 +12,8 @@
         android:title="@string/title_read" />
 
     <item
-        android:id="@+id/navigation_settings"
+        android:id="@+id/navigation_copy"
         android:icon="@drawable/ic_action_settings"
-        android:title="@string/title_settings" />
+        android:title="@string/title_copy" />
 
 </menu>

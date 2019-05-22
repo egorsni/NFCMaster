@@ -4,20 +4,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 
-import com.example.samsungproject.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.MenuItem;
-import android.widget.TextView;
-import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
 
-
+    final static String KEY_MSG_3 = "FRAGMENT3_MSG";
     BottomNavigationView navigation;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -33,8 +30,8 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, ReadText.class);
                     startActivity(intent);
                     return true;
-                case R.id.navigation_settings:
-                    loadFragment(SettingsFragment.newInstance());
+                case R.id.navigation_copy:
+                    loadFragment(StartCopyFragment.newInstance());
                     return true;
             }
             return false;
