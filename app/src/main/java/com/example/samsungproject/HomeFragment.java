@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.samsungproject.R;
 
@@ -26,27 +28,12 @@ public class HomeFragment extends Fragment {
 
 
     public static ArrayList<String> lastUsed;
-
-    public static ArrayList<String> getLastUsed() {
-        return lastUsed;
-    }
-
-    public static void setLastUsed(ArrayList<String> lastUsed) {
-        HomeFragment.lastUsed = lastUsed;
-        lastList.invalidate();
-        lastUsedAdapter.notifyDataSetChanged();
-    }
-
-    public static ListView lastList;
-   public static ArrayAdapter<String> lastUsedAdapter;
+    public static RecyclerView lastList;
+   public static RecyclerViewAdapter lastUsedAdapter;
 
 
     public static String getType() {
         return type;
-    }
-
-    public static void setType(String type) {
-        HomeFragment.type = type;
     }
 
     String [] values =
@@ -72,19 +59,13 @@ public class HomeFragment extends Fragment {
 
 lastList=v.findViewById(R.id.lastItems);
 lastUsed=new ArrayList<>();
-
- lastUsedAdapter=new ArrayAdapter<>(getActivity(),R.layout.last_used_item,R.id.used_item_text,lastUsed);
-
+        lastUsedAdapter =new RecyclerViewAdapter(lastUsed);
+lastUsedAdapter.notifyDataSetChanged();
         Spinner spinner = (Spinner) v.findViewById(R.id.spinner);
-
+lastList.setLayoutManager(new LinearLayoutManager(getContext()));
             lastList.setAdapter(lastUsedAdapter);
 
-lastList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-    }
-});
         MyCustomAdapter adapter = new MyCustomAdapter(getActivity(),
                 R.layout.row, values);
         spinner.setAdapter(adapter);
@@ -93,7 +74,6 @@ lastList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int pos, long id) {
-
 
 switch (pos){
     case 1:

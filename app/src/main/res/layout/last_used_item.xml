@@ -10,7 +10,8 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_margin="5dp"
-        app:srcCompat="@drawable/ic_refresh_black_24dp" />
+        app:srcCompat="@drawable/ic_refresh_black_24dp"
+        android:clickable="true"/>
 
     <TextView
         android:id="@+id/used_item_text"
@@ -21,5 +22,6 @@
         android:text="TextView"
         android:layout_margin="5dp"
         android:textAlignment="textStart"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:clickable="false"/>
 </LinearLayout>

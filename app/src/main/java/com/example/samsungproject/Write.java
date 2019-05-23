@@ -17,6 +17,7 @@ import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,8 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 
+import static com.example.samsungproject.HomeFragment.lastUsed;
+import static com.example.samsungproject.HomeFragment.lastUsedAdapter;
 
 
 public class Write extends Activity {
@@ -165,11 +168,13 @@ public class Write extends Activity {
 
                             break;
                     }
-ArrayList a = HomeFragment.getLastUsed();
-                    a.add(newItemUsed);
-HomeFragment.setLastUsed(a);
+
+                    Log.i("newItemUsed",newItemUsed);
+                    lastUsed.add(newItemUsed);
+                    lastUsedAdapter.notifyDataSetChanged();
 
                     //add newItemUsed to arraylist
+
                     Intent intent1 = new Intent(this, MainActivity.class);
                     startActivity(intent1);
 
