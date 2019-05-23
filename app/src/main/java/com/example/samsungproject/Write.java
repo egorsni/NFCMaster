@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -15,14 +16,19 @@ import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+
+
 
 public class Write extends Activity {
     private static final String TAG = "NFCWriteTag";
@@ -33,13 +39,14 @@ public class Write extends Activity {
     private boolean writeProtect = false;
     private Context context;
     private String name;
-
+    String newItemUsed;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.write);
         context = getApplicationContext();
+
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
         mNfcPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this,
                 getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP
@@ -94,10 +101,7 @@ public class Write extends Activity {
                     WriteResponse wr = writeTag(getTagAsNdef(), detectedTag);
                     String message = (wr.getStatus() == 1? "Success: " : "Failed: ") + wr.getMessage();
                     Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
-                    if(message=="Success: Wrote message to pre-formatted tag."){
-                        Intent intent1= new Intent(this,MainActivity.class);
-                        startActivity(intent1);
-                    }
+
                 } else {
                     Toast.makeText(context,"This tag is not writable",Toast.LENGTH_SHORT).show();
 
@@ -125,7 +129,51 @@ public class Write extends Activity {
                 }
                 ndef.writeNdefMessage(message);
                 if(writeProtect) ndef.makeReadOnly();
-                mess = "Wrote message to pre-formatted tag.";
+                {
+                    mess = "Wrote message to pre-formatted tag.";
+                    char first = newItemUsed.charAt(0);
+                    switch (first) {
+                        case '1':
+                            newItemUsed = removeCharAt(newItemUsed, 0);
+
+                            break;
+                        case '3':
+                            newItemUsed = removeCharAt(newItemUsed, 0);
+                            for (int i = 0; i < newItemUsed.length(); i++) {
+                                char a = newItemUsed.charAt(i);
+
+
+                                switch (a) {
+                                    case '1':
+                                        newItemUsed = "Включение Wifi";
+                                        break;
+                                    case '2':
+
+                                        newItemUsed = "Выключение Wifi";
+                                        break;
+                                }
+
+                            }
+                            break;
+                        case '4':
+                            newItemUsed = removeCharAt(newItemUsed, 0);
+                            break;
+                        default:
+                            newItemUsed = removeCharAt(newItemUsed, 0);
+                            if (!newItemUsed.startsWith("http://") && !newItemUsed.startsWith("https://"))
+                                newItemUsed = "http://" + newItemUsed;
+
+                            break;
+                    }
+ArrayList a = HomeFragment.getLastUsed();
+                    a.add(newItemUsed);
+HomeFragment.setLastUsed(a);
+
+                    //add newItemUsed to arraylist
+                    Intent intent1 = new Intent(this, MainActivity.class);
+                    startActivity(intent1);
+
+                }
                 return new WriteResponse(1,mess);
             } else {
                 NdefFormatable format = NdefFormatable.get(tag);
@@ -202,6 +250,10 @@ public class Write extends Activity {
         }
         return false;
     }
+    public static String removeCharAt(String s, int pos) {
+        return s.substring(0, pos) + s.substring(pos + 1); // Возвращаем подстроку s, которая начиная с нулевой позиции переданной строки (0) и заканчивается позицией символа (pos), который мы хотим удалить, соединенную с другой подстрокой s, которая начинается со следующей позиции после позиции символа (pos + 1), который мы удаляем, и заканчивается последней позицией переданной строки.
+    }
+
     private NdefMessage getTagAsNdef() {
         boolean addAAR = false;
         String uniqueId;
@@ -211,15 +263,18 @@ public class Write extends Activity {
         byte[] payload;
         byte[] uriField;
         String detectedLanguage = null;
+
         switch (type){
             case "text":
                 uniqueId="1"+name;
+                newItemUsed=uniqueId;
                 uriField = uniqueId.getBytes(Charset.forName("US-ASCII"));
                 rtdUriRecord = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
                         NdefRecord.RTD_TEXT, new byte[0], uriField);
                 break;
             case "url":
                 uniqueId=name;
+                newItemUsed=uniqueId;
                 uriField = uniqueId.getBytes(Charset.forName("US-ASCII"));
                 payload = new byte[uriField.length + 1];       //add 1 for the URI Prefix
                 payload[0] = 0x01;                        //prefixes http://www. to the URI
@@ -229,18 +284,21 @@ public class Write extends Activity {
                 break;
             case "action":
                 uniqueId="3"+name;
+                newItemUsed=uniqueId;
                 uriField = uniqueId.getBytes(Charset.forName("US-ASCII"));
                 rtdUriRecord = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
                         NdefRecord.RTD_TEXT, new byte[0], uriField);
                 break;
             case "phone":
                 uniqueId="4"+name;
+                newItemUsed=uniqueId;
                 uriField = uniqueId.getBytes(Charset.forName("US-ASCII"));
                 rtdUriRecord = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
                         NdefRecord.RTD_TEXT, new byte[0], uriField);
                 break;
                 default:
                     uniqueId="1"+name;
+                    newItemUsed=uniqueId;
                     uriField = uniqueId.getBytes(Charset.forName("US-ASCII"));
                     rtdUriRecord = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
                             NdefRecord.RTD_TEXT, new byte[0], uriField);

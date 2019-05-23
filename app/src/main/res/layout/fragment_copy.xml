@@ -11,5 +11,22 @@
     android:layout_height="match_parent">
 
 
+    <Button
+        android:id="@+id/start_copy_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/design_default_color_secondary_variant"
+        android:padding="15dp"
+        android:text="Начать копирование"
+        android:textColor="@color/design_default_color_background"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
