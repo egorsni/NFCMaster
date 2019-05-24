@@ -22,6 +22,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
+import static com.example.samsungproject.MainActivity.usedItems;
+import static com.example.samsungproject.MainActivity.usedMsg;
+
 public class WriteActionFragment extends Fragment {
     static ArrayList action;
     LinearLayout layout;
@@ -51,7 +54,7 @@ public class WriteActionFragment extends Fragment {
     public WriteActionFragment() {
     }
     String [] actionValues =
-            {"Выберите...","Включение WiFi","Выключение WiFi"};
+            {"Выберите...","Включение WiFi","Выключение WiFi","Включение Bluetooth","Выключение Bluetooth"};
 
     private void loadFragment(Fragment fragment) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -62,7 +65,9 @@ public class WriteActionFragment extends Fragment {
     public static WriteActionFragment newInstance() {
         return new WriteActionFragment();
     }
-
+    public static String removeCharAt(String s, int pos) {
+        return s.substring(0, pos) + s.substring(pos + 1); // Возвращаем подстроку s, которая начиная с нулевой позиции переданной строки (0) и заканчивается позицией символа (pos), который мы хотим удалить, соединенную с другой подстрокой s, которая начинается со следующей позиции после позиции символа (pos + 1), который мы удаляем, и заканчивается последней позицией переданной строки.
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -73,7 +78,7 @@ public class WriteActionFragment extends Fragment {
         action= new ArrayList();
         layout = v.findViewById(R.id.linearLayout1);
 
-         Spinner actionSpinner = (Spinner) v.findViewById(R.id.aciton_spinner);
+         final Spinner actionSpinner = (Spinner) v.findViewById(R.id.aciton_spinner);
 
          adapter = new NewCustomAdapter(getActivity(),
                 R.layout.action_row, actionValues);
@@ -99,18 +104,32 @@ start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int pos, long id) {
+                usedMsg="3";
                 switch (pos){
                     case 1:
 if(!action.contains("1")){
     action.add("1");
+    usedMsg=usedMsg+" Включение Wifi";
 }
-                        break;
+break;
                     case 2:
                         if(!action.contains("2")){
                             action.add("2");
+                            usedMsg=usedMsg+" Выключение Wifi";
                         }
-                        break;
-
+break;
+                    case 3:
+                        if(!action.contains("3")){
+                            action.add("3");
+                            usedMsg=usedMsg+" Включение Bluetooth";
+                        }
+break;
+                    case 4:
+                        if(!action.contains("4")){
+                            action.add("4");
+                            usedMsg=usedMsg+" Выключение Bluetooth";
+                        }
+break;
                 }
 
             }
@@ -132,37 +151,13 @@ if(!action.contains("1")){
                 newSpinner.setAdapter(adapter);
                 newSpinner.performClick();
 
-                newSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view,
-                                               int pos, long id) {
-                        switch (pos){
-                            case 1:
-
-                                break;
-                            case 2:
-
-                                break;
-                            case 3:
-//                        type="url";
-//                        loadFragment(WritePhoneFragment.newInstance());
-                                break;
-                        }
-
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> arg0) {
-
-                    }
-                });
+                newSpinner.setOnItemSelectedListener(actionSpinner.getOnItemSelectedListener());
                 newSpinner.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                if(i<2) {
+                if(i<4) {
                     layout.addView(newSpinner);
                     i++;
                 }
-                if(i>=2){
+                if(i>=4){
                     add.hide();
                 }
             }
@@ -208,6 +203,12 @@ if(!action.contains("1")){
                     break;
                 case "Выключение WiFi":
                     icon.setImageResource(R.drawable.wifi_off);
+                    break;
+                case "Включение Bluetooth":
+                    icon.setImageResource(R.drawable.ic_bluetooth_black_24dp);
+                    break;
+                case "Выключение Bluetooth":
+                    icon.setImageResource(R.drawable.ic_bluetooth_disabled_black_24dp);
                     break;
 
             }

@@ -32,7 +32,7 @@
                 android:theme="@style/MyEditText" />
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.internal.CheckableImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/imageButton12"
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:scaleType="fitXY"

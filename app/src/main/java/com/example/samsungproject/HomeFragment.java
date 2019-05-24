@@ -1,18 +1,23 @@
 package com.example.samsungproject;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,15 +27,19 @@ import com.example.samsungproject.R;
 
 import java.util.ArrayList;
 
+import static com.example.samsungproject.MainActivity.editor;
+import static com.example.samsungproject.MainActivity.mSettings;
+import static com.example.samsungproject.MainActivity.removeCharAt;
+import static com.example.samsungproject.MainActivity.usedItems;
 
-public class HomeFragment extends Fragment {
+
+public class HomeFragment extends Fragment implements RecyclerViewAdapter.OnItemClickListener {
     static String type;
-
-
-    public static ArrayList<String> lastUsed;
+Button clearAll;
+static boolean rewrite;
     public static RecyclerView lastList;
    public static RecyclerViewAdapter lastUsedAdapter;
-
+    static boolean clear=false;
 
     public static String getType() {
         return type;
@@ -58,14 +67,33 @@ public class HomeFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_write, container, false);
 
 lastList=v.findViewById(R.id.lastItems);
-lastUsed=new ArrayList<>();
-        lastUsedAdapter =new RecyclerViewAdapter(lastUsed);
-lastUsedAdapter.notifyDataSetChanged();
+if(usedItems==null) {
+    usedItems = new ArrayList<>();
+}
+        lastUsedAdapter =new RecyclerViewAdapter(usedItems);
         Spinner spinner = (Spinner) v.findViewById(R.id.spinner);
 lastList.setLayoutManager(new LinearLayoutManager(getContext()));
+
             lastList.setAdapter(lastUsedAdapter);
+            lastUsedAdapter.setOnItemClickListener(this);
+        lastList.invalidate();
+clearAll=v.findViewById(R.id.clearListButton);
 
+        if(!usedItems.isEmpty()){
+    clear=false;
+}
+clearAll.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        if(editor!=null) {
+            editor.clear();
+        }
+            usedItems.clear();
+            lastList.getAdapter().notifyDataSetChanged();
+            clear = true;
 
+    }
+});
         MyCustomAdapter adapter = new MyCustomAdapter(getActivity(),
                 R.layout.row, values);
         spinner.setAdapter(adapter);
@@ -90,7 +118,7 @@ switch (pos){
         break;
     case 4:
         type="phone";
-        loadFragment(WriteTextFragment.newInstance());
+        loadFragment(WritePhoneNumberFragment.newInstance());
         break;
 }
 
@@ -103,6 +131,46 @@ switch (pos){
         });
         return v;
     }
+
+    @Override
+    public void onItemClick(int position) {
+Intent intent2=new Intent(getContext(),Write.class);
+String o=usedItems.get(position);
+char one =o.charAt(0);
+o=removeCharAt(o,0);
+rewrite=true;
+switch (one){
+    case '1':
+        type="text";
+        break;
+    case '3':
+        String actions="";
+        if(o.contains("Включение Wifi")){
+            actions=actions+"1";
+        }
+        if(o.contains("Выключение Wifi")){
+            actions=actions+"2";
+        }
+        if(o.contains("Включение Bluetooth")){
+            actions=actions+"3";
+        }
+        if(o.contains("Выключение Bluetooth")){
+            actions=actions+"4";
+        }
+        o=actions;
+type="action";
+        break;
+    case '4':
+        type="phone";
+        break;
+    case '5':
+        type="url";
+        break;
+}
+intent2.putExtra("1",o);
+startActivity(intent2);
+    }
+
     public class MyCustomAdapter extends ArrayAdapter<String> {
 
         public MyCustomAdapter(Context context, int textViewResourceId,

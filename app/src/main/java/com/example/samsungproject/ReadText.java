@@ -2,6 +2,7 @@ package com.example.samsungproject;
 
 import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -46,9 +47,10 @@ TextView startText;
     WifiManager wifiManager;
     ConnectivityManager cm;
     TextView tvNFCContent;
-
+    BluetoothAdapter mBluetoothAdapter;
     @Override
     public void onCreate(Bundle savedInstanceState) {
+       mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.read_layout);
         Display display = getWindowManager().getDefaultDisplay();
@@ -153,19 +155,33 @@ for(int i=0;i<text.length();i++){
             if (!wifiManager.isWifiEnabled()) {
                 wifiManager.setWifiEnabled(true);
             }
-            break;
+break;
         case'2':
 
             if (wifiManager.isWifiEnabled()) {
                 wifiManager.setWifiEnabled(false);
             }
-            break;
+break;
+        case'3':
+
+            if (!mBluetoothAdapter.isEnabled()) {
+                mBluetoothAdapter.enable();
+            }
+break;
+        case'4':
+
+            if (mBluetoothAdapter.isEnabled()) {
+                mBluetoothAdapter.disable();
+            }
+break;
     }
     Intent intent= new Intent(this,MainActivity.class);
     startActivity(intent);
 }
                     break;
                 case '4':
+                    startText.setVisibility(View.INVISIBLE);
+                    startImage.setVisibility(View.INVISIBLE);
                     text=removeCharAt(text,0);
                     textvisible.setVisibility(View.VISIBLE);
                     tvNFCContent.setText(text);

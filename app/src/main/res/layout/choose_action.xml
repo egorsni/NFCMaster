@@ -23,7 +23,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:pressedTranslationZ="12dp"
-            app:srcCompat="@android:drawable/ic_input_add"
+            app:srcCompat="@drawable/ic_action_name"
             app:useCompatPadding="false" />
 
         <LinearLayout

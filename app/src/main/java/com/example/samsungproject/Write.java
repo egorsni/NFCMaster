@@ -25,20 +25,26 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 
-import static com.example.samsungproject.HomeFragment.lastUsed;
+
+import static com.example.samsungproject.HomeFragment.clear;
+import static com.example.samsungproject.HomeFragment.lastList;
 import static com.example.samsungproject.HomeFragment.lastUsedAdapter;
+import static com.example.samsungproject.HomeFragment.rewrite;
+import static com.example.samsungproject.MainActivity.editor;
+import static com.example.samsungproject.MainActivity.usedItems;
+import static com.example.samsungproject.MainActivity.usedMsg;
 
 
 public class Write extends Activity {
-    private static final String TAG = "NFCWriteTag";
     private NfcAdapter mNfcAdapter;
     private IntentFilter[] mWriteTagFilters;
     private PendingIntent mNfcPendingIntent;
-    private boolean silent=false;
     private boolean writeProtect = false;
     private Context context;
     private String name;
@@ -118,6 +124,7 @@ public class Write extends Activity {
     public WriteResponse writeTag(NdefMessage message, Tag tag) {
         int size = message.toByteArray().length;
         String mess = "";
+
         try {
             Ndef ndef = Ndef.get(tag);
             if (ndef != null) {
@@ -134,47 +141,16 @@ public class Write extends Activity {
                 if(writeProtect) ndef.makeReadOnly();
                 {
                     mess = "Wrote message to pre-formatted tag.";
-                    char first = newItemUsed.charAt(0);
-                    switch (first) {
-                        case '1':
-                            newItemUsed = removeCharAt(newItemUsed, 0);
-
-                            break;
-                        case '3':
-                            newItemUsed = removeCharAt(newItemUsed, 0);
-                            for (int i = 0; i < newItemUsed.length(); i++) {
-                                char a = newItemUsed.charAt(i);
+Log.i("usedmsg",usedMsg);
+Log.i("usedmsg",String.valueOf(rewrite));
+if(!usedItems.contains(usedMsg)){
+                    lastUsedAdapter.getUsedItems().add(0, usedMsg);
+                    lastList.getAdapter().notifyDataSetChanged();
+                }
 
 
-                                switch (a) {
-                                    case '1':
-                                        newItemUsed = "Включение Wifi";
-                                        break;
-                                    case '2':
-
-                                        newItemUsed = "Выключение Wifi";
-                                        break;
-                                }
-
-                            }
-                            break;
-                        case '4':
-                            newItemUsed = removeCharAt(newItemUsed, 0);
-                            break;
-                        default:
-                            newItemUsed = removeCharAt(newItemUsed, 0);
-                            if (!newItemUsed.startsWith("http://") && !newItemUsed.startsWith("https://"))
-                                newItemUsed = "http://" + newItemUsed;
-
-                            break;
-                    }
-
-                    Log.i("newItemUsed",newItemUsed);
-                    lastUsed.add(newItemUsed);
-                    lastUsedAdapter.notifyDataSetChanged();
-
-                    //add newItemUsed to arraylist
-
+clear=false;
+//add newItemUsed to arraylist
                     Intent intent1 = new Intent(this, MainActivity.class);
                     startActivity(intent1);
 
@@ -349,4 +325,5 @@ public class Write extends Activity {
                     rtdUriRecord});
         }
     }
+
 }

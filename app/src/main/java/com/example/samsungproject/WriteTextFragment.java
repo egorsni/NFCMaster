@@ -15,6 +15,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import static com.example.samsungproject.MainActivity.usedMsg;
+
 public class WriteTextFragment extends Fragment {
 
 
@@ -43,6 +45,12 @@ ImageButton button = v.findViewById(R.id.imageButton);
             public void onClick(View v) {
                 String text = mEditText.getText().toString();
                 Intent intent = new Intent(getActivity(), Write.class);
+                if(HomeFragment.getType()=="text") {
+                    usedMsg = "1" + text;
+                }
+                if(HomeFragment.getType()=="url") {
+                    usedMsg = "5" + text;
+                }
                 intent.putExtra("1", text);
                 startActivity(intent);
             }

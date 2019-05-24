@@ -14,6 +14,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.textfield.TextInputLayout;
 
+import static com.example.samsungproject.MainActivity.usedMsg;
+
 public class WritePhoneNumberFragment extends Fragment {
     private TextInputLayout mTextInputLayout;
     private EditText mEditText;
@@ -31,11 +33,12 @@ public class WritePhoneNumberFragment extends Fragment {
         mTextInputLayout = (TextInputLayout) v.findViewById(R.id.textInputLayout);
         mEditText = (EditText) v.findViewById(R.id.editTextName);
 
-        ImageButton button = v.findViewById(R.id.imageButton);
+        ImageButton button = v.findViewById(R.id.imageButton12);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String text = mEditText.getText().toString();
+                usedMsg="4"+text;
                 Intent intent = new Intent(getActivity(), Write.class);
                 intent.putExtra("1", text);
                 startActivity(intent);
