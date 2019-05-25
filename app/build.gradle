@@ -11,7 +11,7 @@ android {
     }
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.example.NFCMaster"
+        applicationId "com.samsung.NFCMaster"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
