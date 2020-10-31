@@ -54,7 +54,7 @@ public class WriteActionFragment extends Fragment {
     public WriteActionFragment() {
     }
     String [] actionValues =
-            {"Выберите...","Включение WiFi","Выключение WiFi","Включение Bluetooth","Выключение Bluetooth"};
+            {"Choose...","Turn on WiFi","Turn off WiFi","Turn on Bluetooth","Turn off Bluetooth"};
 
     private void loadFragment(Fragment fragment) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -109,25 +109,25 @@ start.setOnClickListener(new View.OnClickListener() {
                     case 1:
 if(!action.contains("1")){
     action.add("1");
-    usedMsg=usedMsg+" Включение Wifi";
+    usedMsg=usedMsg+" Turn on Wifi";
 }
 break;
                     case 2:
                         if(!action.contains("2")){
                             action.add("2");
-                            usedMsg=usedMsg+" Выключение Wifi";
+                            usedMsg=usedMsg+" Turn off Wifi";
                         }
 break;
                     case 3:
                         if(!action.contains("3")){
                             action.add("3");
-                            usedMsg=usedMsg+" Включение Bluetooth";
+                            usedMsg=usedMsg+" Turn on Bluetooth";
                         }
 break;
                     case 4:
                         if(!action.contains("4")){
                             action.add("4");
-                            usedMsg=usedMsg+" Выключение Bluetooth";
+                            usedMsg=usedMsg+" Turn off Bluetooth";
                         }
 break;
                 }
@@ -198,16 +198,16 @@ break;
             label.setText(actionValues[position]);
 
             switch(actionValues[position]){
-                case "Включение WiFi":
+                case "Turn on WiFi":
                     icon.setImageResource(R.drawable.wifi_on);
                     break;
-                case "Выключение WiFi":
+                case "Turn off WiFi":
                     icon.setImageResource(R.drawable.wifi_off);
                     break;
-                case "Включение Bluetooth":
+                case "Turn on Bluetooth":
                     icon.setImageResource(R.drawable.ic_bluetooth_black_24dp);
                     break;
-                case "Выключение Bluetooth":
+                case "Turn off Bluetooth":
                     icon.setImageResource(R.drawable.ic_bluetooth_disabled_black_24dp);
                     break;
 

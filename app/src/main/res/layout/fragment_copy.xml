@@ -21,7 +21,7 @@
         android:layout_marginBottom="8dp"
         android:background="@color/design_default_color_secondary_variant"
         android:padding="15dp"
-        android:text="Начать копирование"
+        android:text="Start copying"
         android:textColor="@color/design_default_color_background"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"

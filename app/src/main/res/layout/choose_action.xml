@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="@font/roboto"
-                android:text="Что вы хотите записать?"
+                android:text="What do you want to write?"
                 android:textSize="25dp" />
 
             <androidx.appcompat.widget.AppCompatSpinner
@@ -69,7 +69,7 @@
             android:layout_marginBottom="8dp"
             android:background="@color/primaryColor"
             android:fontFamily="@font/roboto"
-            android:text="записать"
+            android:text="write"
             android:textColor="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/addActionButton"

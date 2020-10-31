@@ -46,7 +46,7 @@ static boolean rewrite;
     }
 
     String [] values =
-            {"Выберите...","Текст","Действие","Ссылка","Номер телефона"};
+            {"Choose...","Text","Action","Link","Phone number"};
     public HomeFragment() {
     }
 
@@ -145,16 +145,16 @@ switch (one){
         break;
     case '3':
         String actions="";
-        if(o.contains("Включение Wifi")){
+        if(o.contains("Turn on Wifi")){
             actions=actions+"1";
         }
-        if(o.contains("Выключение Wifi")){
+        if(o.contains("Turn off Wifi")){
             actions=actions+"2";
         }
-        if(o.contains("Включение Bluetooth")){
+        if(o.contains("Turn on Bluetooth")){
             actions=actions+"3";
         }
-        if(o.contains("Выключение Bluetooth")){
+        if(o.contains("Turn off Bluetooth")){
             actions=actions+"4";
         }
         o=actions;
@@ -204,16 +204,16 @@ startActivity(intent2);
             label.setText(values[position]);
 
             switch(values[position]){
-                case "Текст":
+                case "Text":
                     icon.setImageResource(R.drawable.ic_text_fields_black_24dp);
                     break;
-                case "Действие":
+                case "Action":
                     icon.setImageResource(R.drawable.ic_action_black_24dp);
                     break;
-                case "Ссылка":
+                case "Link":
                     icon.setImageResource(R.drawable.ic_link_black_24dp);
                     break;
-                case "Номер телефона":
+                case "Phone number":
                     icon.setImageResource(R.drawable.ic_local_phone_black_24dp);
                     break;
             }

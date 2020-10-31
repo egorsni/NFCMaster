@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto"
-                android:hint="Введите номер"
+                android:hint="Input phone number"
                 android:theme="@style/MyEditText" />
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.internal.CheckableImageButton
