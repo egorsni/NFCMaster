@@ -10,8 +10,4 @@ NFCMaster is an Android app which help people to interact with NFC tags. With th
 
 ## Screenshots
 
-![](/Users/comp/Downloads/Screenshot_20201219-100601.png)
-![](/Users/comp/Downloads/Screenshot_20201219-095924.png)
-![](/Users/comp/Downloads/Screenshot_20201219-095919.png)
-![](/Users/comp/Downloads/Screenshot_20201219-095907.png)
-https://user-images.githubusercontent.com/43299958/102681971-7a4c3e80-41e7-11eb-9bb9-687435458705.png
+![](https://user-images.githubusercontent.com/43299958/102681971-7a4c3e80-41e7-11eb-9bb9-687435458705.png)
